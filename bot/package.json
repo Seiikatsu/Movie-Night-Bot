@@ -1,0 +1,28 @@
+{
+	"name": "movie-night-bot",
+	"version": "1.0.0",
+	"scripts": {
+		"start": "ts-node-dev --transpile-only src/index.ts",
+		"build": "tsc -p .",
+		"lint": "eslint . --ext .ts"
+	},
+	"author": ".Seikatsu",
+	"license": "MIT",
+	"type": "module",
+	"dependencies": {
+		"discord.js": "^13.6.0",
+		"dotenv": "^16.0.0",
+		"inversify": "^6.0.1",
+		"reflect-metadata": "^0.1.13"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.21",
+		"@typescript-eslint/eslint-plugin": "^5.12.1",
+		"@typescript-eslint/parser": "^5.12.1",
+		"eslint": "^8.10.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.4",
+		"ts-node-dev": "^1.1.8",
+		"typescript": "^4.5.5"
+	}
+}
