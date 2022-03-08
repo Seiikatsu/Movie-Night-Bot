@@ -1,0 +1,7 @@
+{
+	"command.create_movie_night.description": "Neue MovieNight erstellen.",
+	"command.create_movie_night.options.date.description": "Datum der MovieNight. (Format: {0})",
+	"command.create_movie_night.options.suggest_duration.description": "Dauer, wie lange die Benutzer Vorschlaege einreichen koennen. (Format: {0})",
+	"command.create_movie_night.options.vote_duration.description": "Dauer, wie lange die Benutzer abstimmen koennen. (Format: {0})",
+	"command.create_movie_night.options.max_suggest.description": "Optionale Limitierung der maximalen Vorschlaege."
+}
