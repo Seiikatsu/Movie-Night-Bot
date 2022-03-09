@@ -47,6 +47,11 @@
 		"no-empty-function": "off",
 		"@typescript-eslint/no-empty-function": [
 			"error"
-		]
+		],
+		"no-shadow": "off",
+		"@typescript-eslint/no-shadow": [
+			"error"
+		],
+		"class-methods-use-this": "warn"
 	}
 }

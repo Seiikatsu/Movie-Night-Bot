@@ -1,4 +1,5 @@
 import { Container, interfaces } from 'inversify';
+import { EntityManagerSymbol, TransactionManager, TransactionManagerSymbol } from '../storage';
 import { getServices, getSingletons } from './scopes';
 import { getNamed } from './scopes/named';
 import { ServiceIdentifier } from './scopes/types';
@@ -49,6 +50,31 @@ export class IOCManager {
 	 */
 	public getAll<T>(service: ServiceIdentifier<T>): T[] {
 		return this.mainContainer.getAll(service);
+	}
+
+	/**
+	 * Create a new ioc container and execute the {@code cb} within that container.
+	 * New transaction will be created and bound to the container, everything will be destroyed
+	 * after the callback was executed.
+	 * @param cb the callback
+	 */
+	public async executeInRequestScope(cb: (container: ContainerInterface) => Promise<void>) {
+		const requestContainer = this.createContainer();
+
+		// create new transaction for scope
+		const transactionManager = requestContainer.get<TransactionManager>(TransactionManagerSymbol);
+		const entityManager = await transactionManager.initialize();
+		requestContainer.bind(EntityManagerSymbol)
+			.toConstantValue(entityManager);
+
+		try {
+			await cb(requestContainer);
+			await transactionManager.finalize(entityManager);
+		} catch (e) {
+			await transactionManager.rollback(entityManager);
+		} finally {
+			this.destroyContainer(requestContainer.id);
+		}
 	}
 
 	/**
