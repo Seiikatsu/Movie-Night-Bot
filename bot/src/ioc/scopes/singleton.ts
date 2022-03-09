@@ -2,7 +2,7 @@ import { decorate, injectable } from 'inversify';
 import { Clazz } from '../../@types/Clazz';
 import { ServiceIdentifier } from './types';
 
-const singletons = new Map<ServiceIdentifier<unknown>, Clazz[]>();
+const singletons = new Map<ServiceIdentifier<unknown>, Clazz<unknown>[]>();
 
 /**
  * Class decorator to mark a service as singleton.
@@ -10,7 +10,7 @@ const singletons = new Map<ServiceIdentifier<unknown>, Clazz[]>();
  * @param identifier optional identifier of the class
  */
 export function singleton(identifier?: ServiceIdentifier<unknown>) {
-	return function _singleton<T extends Clazz>(constructor: T) {
+	return function _singleton<T extends Clazz<unknown>>(constructor: T) {
 		decorate(injectable(), constructor);
 		const key = identifier || constructor;
 		let clazzes = singletons.get(key);

@@ -24,12 +24,12 @@ export default class DJSClient implements StartupAction {
 		const { commandName } = interaction;
 		await IOCManager.INSTANCE.executeInRequestScope(async (requestContainer) => {
 			if (requestContainer.isBoundNamed(DJSCommandHandlerSymbol, commandName)) {
-				const commandHandler = requestContainer.getNamed<DJSCommandHandler>( //
-					DJSCommandHandlerSymbol, //
-					commandName, //
-				);
-
 				try {
+					const commandHandler = requestContainer.getNamed<DJSCommandHandler>( //
+						DJSCommandHandlerSymbol, //
+						commandName, //
+					);
+
 					await commandHandler.handle(interaction);
 					if (!interaction.replied) {
 						await interaction.reply('Command executed.');

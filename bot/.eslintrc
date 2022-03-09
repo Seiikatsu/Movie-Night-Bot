@@ -52,6 +52,7 @@
 		"@typescript-eslint/no-shadow": [
 			"error"
 		],
-		"class-methods-use-this": "warn"
+		"class-methods-use-this": "warn",
+		"@typescript-eslint/ban-ts-comment": "warn"
 	}
 }

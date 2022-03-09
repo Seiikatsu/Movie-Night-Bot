@@ -1,1 +1,1 @@
-export type Clazz = { new(...args: any[]): {} };
+export type Clazz<T> = { new(...args: any[]): T };

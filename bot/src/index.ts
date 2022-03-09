@@ -2,10 +2,13 @@
 require('dotenv')
 	.config();
 import 'reflect-metadata';
-import './djs';
 import StartupAction, { StartupActionSymbol } from './interfaces/StartupAction';
 import { IOCManager } from './ioc/IOCManager';
 import PrioritySorter from './utils/PrioritySorter';
+
+// ensure sources are loaded!
+import './djs';
+import './service';
 
 (async () => {
 	// now run all startup jobs

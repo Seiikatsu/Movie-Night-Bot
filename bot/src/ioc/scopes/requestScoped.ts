@@ -2,10 +2,10 @@ import { decorate, injectable } from 'inversify';
 import { Clazz } from '../../@types/Clazz';
 import { ServiceIdentifier } from './types';
 
-const services = new Map<ServiceIdentifier<unknown>, Clazz[]>();
+const services = new Map<ServiceIdentifier<unknown>, Clazz<unknown>[]>();
 
 export function requestScoped(identifier?: ServiceIdentifier<unknown>) {
-	return function _requestScoped<T extends Clazz>(constructor: T) {
+	return function _requestScoped<T extends Clazz<unknown>>(constructor: T) {
 		decorate(injectable(), constructor);
 		const key = identifier || constructor;
 		let clazzes = services.get(key);

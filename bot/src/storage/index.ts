@@ -1,2 +1,2 @@
-export * from './EntityManagerSymbol';
+export * from './EntityManager';
 export * from './transaction';

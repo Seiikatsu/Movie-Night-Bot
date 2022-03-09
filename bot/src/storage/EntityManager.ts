@@ -2,4 +2,4 @@ import { EntityManager } from 'typeorm';
 
 export default EntityManager;
 
-export const EntityManagerSymbol = Symbol.for('EntityManager');
+export const EntityManagerSymbol = Symbol.for('EntityManagerSymbol');
