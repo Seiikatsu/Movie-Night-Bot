@@ -4,14 +4,17 @@ function createPrimaryKeyColumn() {
 	return new TableColumn({
 		name: 'id',
 		type: 'integer',
-		isPrimary: true,
+		isNullable: false,
 		isGenerated: true,
+		generationStrategy: 'increment',
+		isPrimary: true,
+		isUnique: true,
 	});
 }
 
 function createCreatedAtColumn() {
 	return new TableColumn({
-		name: 'createdAt',
+		name: 'created_at',
 		type: 'timestamp',
 		default: 'now()',
 	});
@@ -19,7 +22,7 @@ function createCreatedAtColumn() {
 
 function createUpdatedAtColumn() {
 	return new TableColumn({
-		name: 'updatedAt',
+		name: 'updated_at',
 		type: 'timestamp',
 		default: 'now()',
 	});

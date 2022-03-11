@@ -1,17 +1,15 @@
 import { Client, Interaction } from 'discord.js';
 import DJSCommandHandler, { DJSCommandHandlerSymbol } from '../interfaces/DJSCommandHandler';
-import StartupAction, { StartupActionSymbol } from '../interfaces/StartupAction';
 import { singleton } from '../ioc';
 import { IOCManager } from '../ioc/IOCManager';
 import EnvironmentUtils from '../utils/EnvironmentUtils';
 
-@singleton(StartupActionSymbol)
-export default class DJSClient implements StartupAction {
-	readonly priority = 0;
-
+@singleton()
+export default class DJSClient {
 	private readonly client: Client;
 
 	constructor() {
+		// TODO: check for options like: applications.commands
 		this.client = new Client({
 			intents: [],
 		});
@@ -45,7 +43,7 @@ export default class DJSClient implements StartupAction {
 		});
 	};
 
-	async onStartup(): Promise<void> {
+	async start(): Promise<void> {
 		this.client.on('ready', () => {
 			console.log(`Logged in as ${this.client.user?.tag}!`);
 		});

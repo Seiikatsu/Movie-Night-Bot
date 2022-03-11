@@ -1,10 +1,12 @@
+import { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/rest/v10/interactions';
+
 export default interface DJSCommand {
 	/**
 	 * Get command definition.
 	 *
 	 * @returns command definition
 	 */
-	getCommandDefinition(): unknown;
+	getCommandDefinition(): RESTPostAPIApplicationCommandsJSONBody;
 }
 
 export const DJSCommandSymbol = Symbol.for('DJSCommand');

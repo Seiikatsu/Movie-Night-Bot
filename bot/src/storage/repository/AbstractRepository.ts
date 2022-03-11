@@ -5,8 +5,8 @@ import EntityManager, { EntityManagerSymbol } from '../EntityManager';
 
 @injectable()
 export default abstract class AbstractRepository<ENTITY extends AbstractStorageEntity> {
-	@inject(EntityManagerSymbol)
-	private em!: EntityManager;
+	constructor(@inject(EntityManagerSymbol) private readonly em: EntityManager) {
+	}
 
 	create(data: Omit<ENTITY, 'id' | 'createdAt' | 'updatedAt'>) {
 		const entity = new (this.getEntityType())();
