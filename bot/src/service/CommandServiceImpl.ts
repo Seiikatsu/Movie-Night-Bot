@@ -19,7 +19,6 @@ class CommandServiceImpl implements CommandService {
 	}
 
 	async buildCommandHash(command: DJSCommand): Promise<string> {
-		const { commandRepository } = this;
 		const commandDefinition = command.getCommandDefinition();
 
 		const hashObject = crypto.createHash('sha1');
@@ -28,13 +27,24 @@ class CommandServiceImpl implements CommandService {
 		return hashObject.digest('hex');
 	}
 
-	async createCommandHash(commandId: string, command: DJSCommand): Promise<string> {
+	async createCommandHash(commandId: string, command: DJSCommand): Promise<void> {
 		const { commandRepository } = this;
 		const commandHash = await this.buildCommandHash(command);
 		await commandRepository.create({
 			commandId,
 			commandHash,
 		});
-		return commandHash;
+	}
+
+	async updateCommandHash(commandId:string, command:DJSCommand): Promise<void> {
+		const { commandRepository } = this;
+		const commandStorage = await commandRepository.findByCommandId(commandId);
+		if (!commandStorage) {
+			console.warn(`Command with id ${commandId} does not exists.`);
+			return;
+		}
+
+		commandStorage.commandHash = await this.buildCommandHash(command);
+		await commandRepository.update(commandStorage);
 	}
 }

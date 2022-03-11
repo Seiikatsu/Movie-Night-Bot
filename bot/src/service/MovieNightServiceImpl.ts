@@ -1,4 +1,5 @@
 import { DateTime, Duration } from 'luxon';
+import ValidationException from '../exception/ValidationException';
 import MovieNightService, { MovieNightServiceSymbol } from '../interfaces/MovieNightService';
 import { requestScoped } from '../ioc';
 import LuxonParser from '../utils/LuxonParser';
@@ -31,17 +32,25 @@ class MovieNightServiceImpl implements MovieNightService {
 	): Promise<void> { //
 		const parsedDate = MovieNightServiceImpl.parseDate(date);
 		if (parsedDate === undefined) {
-			throw new Error(`Invalid date format, use: ${LuxonParser.getDateTimeFormat()}`);
+			throw new ValidationException('validation.global.invalid_format', LuxonParser.getDurationFormat());
 		}
 
 		const parsedSuggestDuration = MovieNightServiceImpl.parseDuration(suggestDuration);
 		if (parsedSuggestDuration === undefined) {
-			throw new Error(`Invalid duration format, use: ${LuxonParser.getDurationFormat()}`);
+			throw new ValidationException('validation.global.invalid_format', LuxonParser.getDurationFormat());
 		}
 
 		const parsedVoteDuration = MovieNightServiceImpl.parseDuration(voteDuration);
 		if (parsedVoteDuration === undefined) {
-			throw new Error(`Invalid duration format, use: ${LuxonParser.getDurationFormat()}`);
+			throw new ValidationException('validation.global.invalid_format', LuxonParser.getDurationFormat());
 		}
+
+		const minDate = DateTime.now().plus(parsedSuggestDuration).plus(parsedVoteDuration);
+
+		if (parsedDate.diff(minDate).toMillis() < 0) {
+			throw new Error('command.create_movie_night.validation.invalid_duration');
+		}
+
+		console.log(parsedDate.toISODate(), parsedSuggestDuration.toISO(), parsedVoteDuration.toISO());
 	}
 }

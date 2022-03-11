@@ -9,7 +9,42 @@ class I18NServiceImpl implements I18NService {
 	constructor(@inject(LocaleServiceSymbol) private readonly localeService: LocaleService) {
 	}
 
-	translate(key: string, ...parameters: string[]): string {
+	private static fillParameters(text: string, parameters?: unknown[]): string {
+		if (!parameters || parameters.length === 0) {
+			return text;
+		}
+
+		let formattedText = text;
+		for (let idx = 0; idx < parameters.length; idx += 1) {
+			const param = I18NServiceImpl.mapParameter(parameters[idx]);
+			formattedText = formattedText.replace(`{${idx}}`, param);
+		}
+		return formattedText;
+	}
+
+	private static mapParameter(parameter: unknown): string {
+		switch (typeof parameter) { // TODO: check if every case makes sense?!
+		case 'string':
+			return parameter;
+		case 'boolean':
+		case 'number':
+		case 'bigint':
+		case 'symbol':
+			return parameter.toString();
+		case 'function':
+			return this.mapParameter(parameter());
+		case 'object':
+			if (parameter === null) {
+				return '';
+			}
+			return JSON.stringify(parameter);
+		case 'undefined':
+		default:
+			return '';
+		}
+	}
+
+	translate(key: string, ...parameters: unknown[]): string {
 		const appLocale = this.localeService.getLocale();
 		const textMap = localeMap[appLocale];
 		if (textMap !== undefined) {
@@ -22,18 +57,5 @@ class I18NServiceImpl implements I18NService {
 		}
 		console.warn(`Cannot find text atlas for locale ${appLocale}`);
 		return ' ';
-	}
-
-	private static fillParameters(text: string, parameters?: string[]): string {
-		if (!parameters || parameters.length === 0) {
-			return text;
-		}
-
-		let formattedText = text;
-		for (let idx = 0; idx < parameters.length; idx += 1) {
-			const param = parameters[idx];
-			formattedText = formattedText.replace(`{${idx}}`, param);
-		}
-		return formattedText;
 	}
 }

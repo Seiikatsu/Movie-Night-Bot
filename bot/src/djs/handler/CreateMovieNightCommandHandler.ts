@@ -1,5 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 import { inject } from 'inversify';
+import ValidationException from '../../exception/ValidationException';
 import DJSCommandHandler, { DJSCommandHandlerSymbol } from '../../interfaces/DJSCommandHandler';
 import MovieNightService, { MovieNightServiceSymbol } from '../../interfaces/MovieNightService';
 import { named, requestScoped } from '../../ioc';
@@ -27,9 +28,10 @@ class CreateMovieNightCommandHandler implements DJSCommandHandler {
 				interaction.options.getNumber(CreateMovieNightCommand.MAX_SUGGEST_OPTIONS), //
 			);
 		} catch (e) {
-			if (e instanceof Error) {
-				await interaction.reply(e.message);
+			if (e instanceof ValidationException) {
+				await interaction.reply(e.getText());
 			}
+			throw e;
 		}
 	}
 }

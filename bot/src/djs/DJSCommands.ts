@@ -109,12 +109,13 @@ export default class DJSCommands implements StartupAction {
 		applicationId: Snowflake, //
 		guildId: Snowflake, //
 	): Promise<void> { //
-		const { rest } = this;
+		const { rest, commandService } = this;
 		const commandDefinition = command.getCommandDefinition();
 		console.log('update command', commandDefinition.name, commandDefinition);
 		await rest.patch(Routes.applicationGuildCommand(applicationId, guildId, commandId), { //
 			body: commandDefinition, //
 		});
+		await commandService.updateCommandHash(commandId, command);
 	}
 
 	private async deleteCommand( //
