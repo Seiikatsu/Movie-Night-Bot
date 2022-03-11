@@ -5,5 +5,14 @@
 	"command.create_movie_night.options.vote_duration.description": "Dauer, wie lange die Benutzer abstimmen koennen. (Format: {0})",
 	"command.create_movie_night.options.max_suggest.description": "Optionale Limitierung der maximalen Vorschlaege.",
 	"command.create_movie_night.validation.invalid_duration": "Datum der MovieNight muss groesser sein, als Vorschlag -/ Abstimmzeitraum.",
-	"validation.global.invalid_format": "Ungueltiges Format, benutze: {0}"
+	"command.create_movie_night.validation.in_past": "Das Datum der MovieNight muss in der Zukunft liegen.",
+	"command.create_movie_night.response.title": "MovieNight erstellt",
+	"command.create_movie_night.response.fields.date": "Datum",
+	"command.create_movie_night.response.fields.suggest_duration": "Vorschlagezeitraum",
+	"command.create_movie_night.response.fields.vote_duration": "Abstimmzeitraum",
+	"validation.global.invalid_format": "Ungueltiges Format, benutze: {0}",
+	"global.error": "Fehler",
+	"global.duration": "{0} - {1}",
+	"global.duration.with_date": "{0} ({1})",
+	"global.duration.with_period": "{0} ({1})"
 }

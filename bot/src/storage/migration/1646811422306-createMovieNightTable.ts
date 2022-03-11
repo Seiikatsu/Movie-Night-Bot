@@ -23,11 +23,12 @@ TABLE.addColumn(new TableColumn({
 	comment: 'UNIX timestamp until votes are allowed.',
 }));
 
-TABLE.addColumn(new TableColumn({
+export const MAX_SUGGESTIONS_COLUMN = new TableColumn({
 	name: 'max_suggestions',
 	type: 'int',
 	comment: 'How many suggestions are allowed.',
-}));
+});
+TABLE.addColumn(MAX_SUGGESTIONS_COLUMN);
 
 TABLE.addColumn(ColumnUtils.createCreatedAtColumn());
 TABLE.addColumn(ColumnUtils.createUpdatedAtColumn());

@@ -1,8 +1,11 @@
 import { inject } from 'inversify';
+import { DateTime, Duration } from 'luxon';
 import { singleton } from '../ioc';
 import { LocaleService, LocaleServiceSymbol } from '../locale';
+import Formatter from '../utils/Formatter';
 import { I18NService, I18NServiceSymbol } from './I18NService';
 import localeMap from './translationMap';
+import Period from '../interfaces/Period';
 
 @singleton(I18NServiceSymbol)
 class I18NServiceImpl implements I18NService {
@@ -36,6 +39,15 @@ class I18NServiceImpl implements I18NService {
 		case 'object':
 			if (parameter === null) {
 				return '';
+			}
+			if (parameter instanceof DateTime) {
+				return Formatter.formatDateTime(parameter);
+			}
+			if (parameter instanceof Duration) {
+				return Formatter.formatDuration(parameter);
+			}
+			if ('text' in parameter) {
+				return I18NServiceImpl.mapParameter((parameter as any).text);
 			}
 			return JSON.stringify(parameter);
 		case 'undefined':

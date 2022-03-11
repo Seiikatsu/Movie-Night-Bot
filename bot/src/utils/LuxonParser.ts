@@ -6,6 +6,7 @@ import {
 import { PartialRecord } from '../@types/PartialRecord';
 import { IOCManager } from '../ioc/IOCManager';
 import { LocaleService, LocaleServiceSymbol } from '../locale';
+import Lazy from '../storage/utils/Lazy';
 
 Settings.throwOnInvalid = true;
 
@@ -15,24 +16,15 @@ const DATE_TIME_FORMAT_MAP: PartialRecord<Locale, string> = {
 	[Locale.German]: 'dd.MM.yyyy HH:mm',
 };
 
-let locale: Locale;
-
-function getLocale(): Locale {
-	if (!locale) {
-		locale = IOCManager.INSTANCE.get<LocaleService>(LocaleServiceSymbol)
-			.getLocale();
-	}
-	if (!locale) {
-		throw new Error('Could not determine locale!');
-	}
-	return locale;
-}
+const lazyLocale = new Lazy(
+	() => IOCManager.INSTANCE.get<LocaleService>(LocaleServiceSymbol).getLocale(),
+);
 
 let dateTimeFormat: string | undefined;
 
 function getDateTimeFormat(): string {
 	if (!dateTimeFormat) {
-		locale = getLocale();
+		const locale = lazyLocale.get();
 		dateTimeFormat = DATE_TIME_FORMAT_MAP[locale];
 	}
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -40,15 +32,19 @@ function getDateTimeFormat(): string {
 }
 
 function parseDateTime(unparsed: string): DateTime {
-	return DateTime.fromFormat(unparsed.trim(), getDateTimeFormat(), {
-		locale,
-	});
+	return DateTime.fromFormat(
+		unparsed.trim(),
+		getDateTimeFormat(),
+		{
+			locale: lazyLocale.get(),
+		},
+	);
 }
 
 type MapperFunction = (config: DurationLikeObject, value: number) => void;
 const DURATION_MAPPERS: PartialRecord<string, MapperFunction> = {
 	m: (c, v) => c.months = v,
-	w: (c,v) => c.weeks = v,
+	w: (c, v) => c.weeks = v,
 	d: (c, v) => c.days = v,
 	h: (c, v) => c.hours = v,
 };

@@ -33,6 +33,7 @@ export default class DJSClient {
 						await interaction.reply('Command executed.');
 					}
 				} catch (e) {
+					console.error(e);
 					await interaction.reply('Internal error');
 					throw e;
 				}

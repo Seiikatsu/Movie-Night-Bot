@@ -10,4 +10,8 @@ export default class Lazy<T> {
 		}
 		return this.impl;
 	}
+
+	reset() {
+		this.impl = undefined;
+	}
 }
